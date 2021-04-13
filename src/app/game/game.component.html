@@ -1,0 +1,14 @@
+<app-new-game *ngIf="!game" (newGame)="setGame($event)"></app-new-game>
+
+<div *ngIf="game">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            Your turn
+        </div>
+        <div class="col-6">
+    
+        </div>
+    </div>
+    </div>
+</div>
