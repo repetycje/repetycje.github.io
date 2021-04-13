@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-center align-items-center">
+    <div>
+        <form #gameForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="alphabet">Alphabet</label>
+                <input type="text" class="form-control" id="alphabet" required [(ngModel)]="alphabet" name="alphabet">
+            </div>
+
+            <div class="form-group">
+                <label for="maxWordLen">Max word length</label>
+                <input type="text" class="form-control" id="maxWordLen" [(ngModel)]="maxWordLen" name="maxWordLen" min="1" type="number">
+            </div>
+
+            <div class="form-group">
+                <label for="maxRounds">Number of rounds</label>
+                <input type="text" class="form-control" id="maxRounds" [(ngModel)]="maxRounds" min="1" name="maxRounds" type="number">
+            </div>
+            <button class="btn btn-success" type="submit">Start</button>
+        </form>
+    </div>
+</div>
