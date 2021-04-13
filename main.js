@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\ulano\source\repos\repetycje.github.io\repetycje\src\main.ts */"zUnb");
+module.exports = __webpack_require__(/*! C:\Users\ulano\source\repos\repetycje.github.io\src\main.ts */"zUnb");
 
 
 /***/ }),
