@@ -2,13 +2,11 @@
 
 <div *ngIf="game">
     <div class="container-fluid">
-    <div class="row">
-        <div class="col-6">
-            Your turn
+        <div class="row">
+            <button class="btn btn-success" (click)="resetGame()">New Game</button>
+            <input (keydown)="userMadeMove($event)">
+            rounds: {{this.game?.round}} / {{2 * this.game?.round}}
         </div>
-        <div class="col-6">
-    
-        </div>
-    </div>
+        <p *ngFor="let word of wordsHistory">{{word}}</p>
     </div>
 </div>

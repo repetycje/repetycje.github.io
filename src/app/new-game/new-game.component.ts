@@ -8,9 +8,9 @@ import { Game } from 'src/models/game';
 })
 export class NewGameComponent {
 
-  public alphabet: string = "";
-  public maxWordLen: number = 1;
-  public maxRounds: number = 1;
+  public alphabet: string = "asd";
+  public maxWordLen: number = 10;
+  public maxRounds: number = 10;
 
   @Output() newGame = new EventEmitter<Game>();
 
