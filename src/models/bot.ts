@@ -7,11 +7,10 @@ export class Bot {
         this._word = "";
     }
 
-    public makeMove(char:string): string {
-        this._word+=char;
+    public makeMove(char: string): string {
+        this._word += char;
         const choice = this._alphabet[0];
-        
+        this._word += choice;
         return choice;
-
     }
 }
