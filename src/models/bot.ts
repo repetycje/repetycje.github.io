@@ -5,7 +5,7 @@ export class Bot {
     private node: Node
 
     constructor(alphabet: string, maxRounds: number, maxWordLen: number) {
-        this.game = new Game(alphabet, maxWordLen, maxRounds,);
+        this.game = new Game(alphabet, maxWordLen, maxRounds);
     }
 
     public makeMove(char: string): string {
@@ -47,8 +47,6 @@ export class Bot {
         this.game.append(bestNode.move)
         return bestNode.move;
     }
-
-
     
     selectRandom(untriedMoves: string): string {
         return untriedMoves[Math.floor(Math.random() * untriedMoves.length)]
