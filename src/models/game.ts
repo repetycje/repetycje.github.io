@@ -9,21 +9,27 @@ export class Game {
   public readonly alphabet: string;
   public readonly maxWordLen: number;
   public readonly maxRounds: number;
-  private _word: string = "";
-  private _round: number = 0;
+  private _word: string;
+  private _round: number;
 
   public get round() {
     return this._round;
   }
 
-  constructor(alphabet: string, maxWordLen: number, maxRounds: number) {
+  public get word() {
+    return this._word;
+  }
+
+  constructor(alphabet: string, maxWordLen: number, maxRounds: number, round: number = 0, word: string = "") {
     this.alphabet = alphabet;
     this.maxWordLen = maxWordLen;
     this.maxRounds = maxRounds;
+    this._round = round
+    this._word = word
   }
 
   public append(char: string): string {
-    if (this.isGameFinished()) {
+    if (this.isFinished()) {
       throw new GameFinishedError("Game already finished!")
     }
     this._word += char;
@@ -40,7 +46,7 @@ export class Game {
     return !this.isPlayer1Winner() && this._round >= this.maxRounds * 2
   }
 
-  public isGameFinished(): boolean {
+  public isFinished(): boolean {
     return this.isPlayer1Winner() || this.isPlayer2Winner()
   }
 
