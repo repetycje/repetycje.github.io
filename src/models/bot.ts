@@ -40,17 +40,12 @@ export class Bot {
                 node.update(iWon);
                 node = node.parent;
             }
-
         }
         let bestNode = this.node.childNodes.reduce((prev, current) => (prev.ucb() > current.ucb()) ? prev : current);
         this.node = bestNode;
         bestNode.parent = null;
         this.game.append(bestNode.move)
         return bestNode.move;
-
-        const choice = this.game.alphabet[0];
-        
-        return choice;
     }
 
 
