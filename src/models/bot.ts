@@ -13,17 +13,16 @@ export class Bot {
         const start = new Date().getTime();
         while (new Date().getTime() - start < 800) {
             let node: Node = this.node;
-            let game: Game = new Game(this.game.alphabet, this.game.maxWordLen, this.game.maxRounds, this.game.round, this.game.word);
+            let game: Game = this.game.copy();
 
             //selection # keep going down the tree based on best UCB values until terminal or unexpanded node
-            while (node.untriedMoves.length === 0 && node.childNodes.length > 0) {
+            while (node.childNodes.length === node.untriedMoves.length) {
                 node = node.selection();
                 game.append(node.move)
             }
             //expand
-            if (!game.isFinished() && node.untriedMoves.length > 0) {
-                const move = this.selectRandom(node.untriedMoves);
-                this.removeMove(node, move);
+            if (!game.isFinished() && node.childNodes.length < node.untriedMoves.length) {
+                const move = node.untriedMoves[node.childNodes.length]
                 game.append(move);
                 const currNode = node;
                 node = new Node(move, currNode, game.alphabet, !currNode.myMove);
@@ -41,18 +40,15 @@ export class Bot {
                 node = node.parent;
             }
         }
-        let bestNode = this.node.childNodes.reduce((prev, current) => (prev.ucb() > current.ucb()) ? prev : current);
+        let bestNode = this.node.selection();
         this.node = bestNode;
         bestNode.parent = null;
         this.game.append(bestNode.move)
         return bestNode.move;
     }
     
-    selectRandom(untriedMoves: string): string {
-        return untriedMoves[Math.floor(Math.random() * untriedMoves.length)]
-    }
-    removeMove(node: Node, move: string) {
-        node.untriedMoves = node.untriedMoves.replace(move, '');
+    selectRandom(moves: string): string {
+        return moves[Math.floor(Math.random() * moves.length)]
     }
 
     private getNode(lastMove): Node {
@@ -84,7 +80,7 @@ class Node {
 
     constructor(move: string, parent: Node, untriedMoves: string, myMove: boolean) {
         this.parent = parent;
-        this.untriedMoves = untriedMoves;
+        this.untriedMoves = untriedMoves.split('').sort(function(){return 0.5-Math.random()}).join('');
         this.childNodes = [];
         this.won = 0;
         this.lost = 0;

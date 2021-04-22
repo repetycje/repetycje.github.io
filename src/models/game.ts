@@ -28,6 +28,10 @@ export class Game {
     this._word = word
   }
 
+  public copy(): Game {
+    return new Game(this.alphabet, this.maxWordLen, this.maxRounds, this.round, this.word);
+  }
+
   public append(char: string): string {
     if (this.isFinished()) {
       throw new GameFinishedError("Game already finished!")
