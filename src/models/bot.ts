@@ -16,13 +16,13 @@ export class Bot {
             let game: Game = this.game.copy();
 
             //selection # keep going down the tree based on best UCB values until terminal or unexpanded node
-            while (node.childNodes.length === node.untriedMoves.length) {
+            while (node.childNodes.length === node.possibleMoves.length) {
                 node = node.selection();
                 game.append(node.move)
             }
             //expand
-            if (!game.isFinished() && node.childNodes.length < node.untriedMoves.length) {
-                const move = node.untriedMoves[node.childNodes.length]
+            if (!game.isFinished() && node.childNodes.length < node.possibleMoves.length) {
+                const move = node.possibleMoves[node.childNodes.length]
                 game.append(move);
                 const currNode = node;
                 node = new Node(move, currNode, game.alphabet, !currNode.myMove);
@@ -70,7 +70,7 @@ export class Bot {
 
 class Node {
     parent: Node;
-    untriedMoves: string;
+    possibleMoves: string;
     childNodes: Node[];
     won: number;
     lost: number;
@@ -78,9 +78,9 @@ class Node {
     move: string;
     myMove: boolean;
 
-    constructor(move: string, parent: Node, untriedMoves: string, myMove: boolean) {
+    constructor(move: string, parent: Node, possibleMoves: string, myMove: boolean) {
         this.parent = parent;
-        this.untriedMoves = untriedMoves.split('').sort(function(){return 0.5-Math.random()}).join('');
+        this.possibleMoves = possibleMoves.split('').sort(function(){return 0.5-Math.random()}).join('');
         this.childNodes = [];
         this.won = 0;
         this.lost = 0;
