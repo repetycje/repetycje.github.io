@@ -38,7 +38,7 @@ export class GameComponent implements OnInit {
     }
     this.word = this.game.append($event.key);
     this.wordsHistory.push(this.word);
-    if (!this.game.isGameFinished()) {
+    if (!this.game.isFinished()) {
       const letter = this.bot.makeMove($event.key);
       let afterBotMove = this.word + letter;
       this.wordsHistory.push(afterBotMove);
@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
     }
     setTimeout(() => $event.path[0].value = this.word, 20);
 
-    if (this.game.isGameFinished()) {
+    if (this.game.isFinished()) {
       if (this.game.isPlayer1Winner()) {
         alert('Player 1 won');
       }
