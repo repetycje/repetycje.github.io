@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Game} from "../../models/game";
+import {Game} from "../models/game";
 
 @Injectable({
   providedIn: 'root'
