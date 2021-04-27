@@ -4,8 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GameComponent } from './game/game.component';
-import { NewGameComponent } from './new-game/new-game.component';
+import { GameComponent } from './components/game/game.component';
+import { NewGameComponent } from './components/new-game/new-game.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
