@@ -8,7 +8,8 @@ import { Game } from 'src/models/game';
 })
 export class NewGameComponent {
 
-  public alphabet: string = "asd";
+  public alphabetRaw: string = "asd";
+  public alphabet: string = this.alphabetRaw;
   public maxWordLen: number = 10;
   public maxRounds: number = 10;
 
@@ -17,6 +18,12 @@ export class NewGameComponent {
 
   onSubmit() {
     this.newGame.next(new Game(this.alphabet, this.maxWordLen, this.maxRounds));
+  }
+
+  updateAlphabet() {
+    const alphabetList = this.alphabetRaw.split('');
+    const alphabetSet = [...new Set(alphabetList)]
+    this.alphabet = alphabetSet.join('');
   }
 
 }

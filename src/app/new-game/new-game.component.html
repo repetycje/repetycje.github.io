@@ -1,21 +1,35 @@
-<div class="d-flex justify-content-center align-items-center">
-    <div>
-        <form #gameForm="ngForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="alphabet">Alphabet</label>
-                <input type="text" class="form-control" id="alphabet" required [(ngModel)]="alphabet" name="alphabet">
-            </div>
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">New Game</h2>
+            <form #gameForm="ngForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label>Alphabet:</label>
+                    <input type="text" class="form-control" id="alphabetRaw"
+                           [(ngModel)]="alphabetRaw" name="alphabetRaw" (keyup)="updateAlphabet()">
+                    <div class="mt-2">
+                        <ul class="list-group list-group-horizontal">
+                            <li *ngFor="let symbol of alphabet.split('')" class="list-group-item">{{ symbol }}</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label for="maxWordLen">Max word length</label>
-                <input type="text" class="form-control" id="maxWordLen" [(ngModel)]="maxWordLen" name="maxWordLen" min="1" type="number">
-            </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="maxWordLen">Max word length:</label>
+                        <input type="text" class="form-control" id="maxWordLen" [(ngModel)]="maxWordLen"
+                               name="maxWordLen"
+                               min="1" type="number">
+                    </div>
 
-            <div class="form-group">
-                <label for="maxRounds">Number of rounds</label>
-                <input type="text" class="form-control" id="maxRounds" [(ngModel)]="maxRounds" min="1" name="maxRounds" type="number">
-            </div>
-            <button class="btn btn-success" type="submit">Start</button>
-        </form>
+                    <div class="form-group col-md-6">
+                        <label for="maxRounds">Number of rounds:</label>
+                        <input type="text" class="form-control" id="maxRounds" [(ngModel)]="maxRounds" min="1"
+                               name="maxRounds" type="number">
+                    </div>
+                </div>
+                <button class="btn btn-block btn-primary" type="submit">Start</button>
+            </form>
+        </div>
     </div>
 </div>
