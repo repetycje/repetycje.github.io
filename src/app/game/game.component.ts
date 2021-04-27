@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Bot } from 'src/models/bot';
 import { Game } from 'src/models/game';
+import {Router} from "@angular/router";
+import {GameService} from "../../services/game.service";
 
 @Component({
   selector: 'app-game',
@@ -14,9 +16,16 @@ export class GameComponent implements OnInit {
   public word: string = "";
   public wordsHistory: string[] = [];
 
-  constructor() { }
+  constructor(
+      private router: Router,
+      private gameService: GameService
+  ) { }
 
   ngOnInit(): void {
+    const game = this.gameService.game;
+    if (game == null) {
+      this.router.navigate(['']);
+    }
   }
 
   public setGame($event: Game) {

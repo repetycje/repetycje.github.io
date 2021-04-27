@@ -1,6 +1,4 @@
-<app-new-game *ngIf="!game" (newGame)="setGame($event)"></app-new-game>
-
-<div *ngIf="game">
+<div>
     <div class="container-fluid">
         <div class="row">
             <button class="btn btn-success" (click)="resetGame()">New Game</button>
