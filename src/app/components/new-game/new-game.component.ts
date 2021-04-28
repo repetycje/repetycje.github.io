@@ -10,10 +10,11 @@ import {GameService} from "../../services/game.service";
 })
 export class NewGameComponent {
 
-    public alphabetRaw: string = "asd";
+    public alphabetRaw: string = "abcdefghijklmnprqstuvwxyz";
     public alphabet: string = this.alphabetRaw;
     public maxWordLen: number = 10;
     public maxRounds: number = 10;
+    public readonly maxSymbolsPerRow: number = 8;
 
     constructor(
         private gameService: GameService,

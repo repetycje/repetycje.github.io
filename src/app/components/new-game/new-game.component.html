@@ -7,10 +7,9 @@
                     <label>Alphabet:</label>
                     <input type="text" class="form-control" id="alphabetRaw"
                            [(ngModel)]="alphabetRaw" name="alphabetRaw" (keyup)="updateAlphabet()">
-                    <div class="mt-2">
-                        <ul class="list-group list-group-horizontal">
-                            <li *ngFor="let symbol of alphabet.split('')" class="list-group-item">{{ symbol }}</li>
-                        </ul>
+                    <div class="m-2 row justify-content-center">
+                        <button *ngFor="let symbol of alphabet.split('')" disabled
+                                class="col-1 btn btn-outline-primary m-1">{{symbol}}</button>
                     </div>
                 </div>
 

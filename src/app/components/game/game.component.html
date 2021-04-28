@@ -1,10 +1,35 @@
-<div>
-    <div class="container-fluid">
+<div class="mt-5 row">
+    <div class="col-md-7">
         <div class="row">
-            <button class="btn btn-success" (click)="resetGame()">New Game</button>
-            <input (keydown)="userMadeMove($event)">
-            rounds: {{this.game?.round}} / {{2 * this.game?.round}}
+            <div class="m-2 row justify-content-center">
+                <button *ngFor="let symbol of game?.alphabet.split('')" (click)="userMadeMove(symbol)"
+                        [disabled]="!canMove"
+                        class="col-1 btn btn-outline-primary m-1">{{symbol}}</button>
+            </div>
         </div>
-        <p *ngFor="let word of wordsHistory">{{word}}</p>
+    </div>
+    <div class="col-md-5 justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">History</h3>
+                <ol class="list-group list-group-numbered">
+                    <li *ngFor="let historyItem of history" class="list-group-item">
+                        <div class="row justify-content-between">
+                            <div class="col">
+                                <span>{{ historyItem.wordBefore }} </span>
+                                <i-bs name="plus"></i-bs>
+                                <span> {{ historyItem.lastMove }} </span>
+                                <i-bs name="arrow-right"></i-bs>
+                                <span> {{ historyItem.wordAfter}} </span>
+                            </div>
+                            <div class="col-auto">
+                                <span class="badge" [class.bg-primary]="historyItem.playerName == 'Player'"
+                                      [class.bg-danger]="historyItem.playerName == 'Bot'">{{ historyItem.playerName }}</span>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
 </div>
