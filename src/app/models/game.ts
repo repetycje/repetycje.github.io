@@ -32,6 +32,11 @@ export class Game {
     return new Game(this.alphabet, this.maxWordLen, this.maxRounds, this.round, this.word);
   }
 
+  public reset() {
+    this._word = "";
+    this._round = 0;
+  }
+
   public append(char: string): string {
     if (this.isFinished()) {
       throw new GameFinishedError("Game already finished!")
@@ -47,7 +52,7 @@ export class Game {
   }
 
   public isPlayer2Winner(): boolean {
-    return !this.isPlayer1Winner() && this._round >= this.maxRounds * 2
+    return !this.isPlayer1Winner() && this._round >= this.maxRounds
   }
 
   public isFinished(): boolean {

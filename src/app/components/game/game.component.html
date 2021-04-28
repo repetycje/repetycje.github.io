@@ -1,36 +1,52 @@
 <div class="mt-5 row">
-    <div class="col-md-7">
-        <div>
-            <div class="row justify-content-between align-items-center">
-                <div class="col-auto">
-                    <h2>Current word: <b> {{ this.word }} </b></h2>
+    <div class="col-md-7 mb-3">
+        <div class="card">
+            <div class="card-header">
+                <div class="row justify-content-between">
+                    <h3 class="col">Round: <span class="badge bg-secondary">{{ this.game?.round }}
+                        / {{ this.game?.maxRounds }}</span></h3>
+                    <div *ngIf="!canMove" class="col row justify-content-end align-items-center mx-2">
+                        <div class="spinner-border text-danger" role="status"></div>
+                        <span class="text-danger ml-3"><b>Bot thinking...</b></span>
+                    </div>
                 </div>
-                <div class="col-auto">
-                    <h4><span class="badge bg-secondary">{{ this.word.length }} / {{this.game?.maxWordLen}}</span></h4>
+            </div>
+            <div class="card-body">
+                <h2>Current word:</h2>
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h3 class="text-primary"> {{ this.word }} </h3>
+                    </div>
+                    <div class="col-auto">
+                        <h4><span class="badge bg-primary">{{ this.word.length }} / {{this.game?.maxWordLen}}</span>
+                        </h4>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <h3>Round: <span class="badge bg-success">{{ this.game?.round }} / {{ this.game?.maxRounds }}</span></h3>
-            </div>
-            <div *ngIf="!canMove" class="row justify-content-start align-items-center ml-3">
-                <div class="spinner-border text-danger" role="status"></div>
-                <span class="text-danger ml-3"><b>Bot thinking...</b></span>
-            </div>
-            <div class="row">
-                <div class="m-2 row justify-content-center">
-                    <button *ngFor="let symbol of game?.alphabet.split('')" (click)="userMadeMove(symbol)"
-                            [disabled]="!canMove"
-                            class="col-1 btn btn-outline-primary m-1">{{symbol}}</button>
+                <div class="row">
+                    <div class="m-2 row justify-content-center">
+                        <button *ngFor="let symbol of game?.alphabet.split('')" (click)="userMadeMove(symbol)"
+                                [disabled]="!canMove"
+                                class="col-1 btn btn-outline-primary m-1">{{symbol}}</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-5 justify-content-center">
+        <div class="row mb-3">
+            <div class="col">
+                <button class="btn btn-block btn-primary" (click)="resetGame()">Restart</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-block btn-primary" (click)="newGame()">New Game</button>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">History</h3>
                 <ol class="list-group list-group-numbered">
-                    <li *ngFor="let historyItem of history" class="list-group-item">
+                    <li *ngFor="let historyItem of history; let odd = odd" class="list-group-item"
+                        [ngClass]="{ 'list-group-item-light': odd }">
                         <div class="row justify-content-between">
                             <div class="col">
                                 <span><b>{{ historyItem.wordBefore }} </b></span>
@@ -40,8 +56,10 @@
                                 <span><b> {{ historyItem.wordAfter}}</b></span>
                             </div>
                             <div class="col-auto">
-                                <span class="badge" [class.bg-primary]="historyItem.playerName == 'Player'"
-                                      [class.bg-danger]="historyItem.playerName == 'Bot'">{{ historyItem.playerName }}</span>
+                                <span class="badge"
+                                      [ngClass]="{'bg-primary': historyItem.playerName == 'Player', 'bg-danger': historyItem.playerName == 'Bot'}">
+                                    {{ historyItem.playerName }}
+                                </span>
                             </div>
                         </div>
                     </li>
@@ -50,3 +68,21 @@
         </div>
     </div>
 </div>
+
+<ng-template #end let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Game Over</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row justify-content-center">
+            <h3>
+                <span *ngIf="this.game?.isPlayer1Winner()" class="text-primary">You won!</span>
+                <span *ngIf="this.game?.isPlayer2Winner()" class="text-danger">Bot won</span>
+            </h3>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close('restart')">Restart</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('new')">New game</button>
+    </div>
+</ng-template>

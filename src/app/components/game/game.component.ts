@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Bot} from 'src/app/models/bot';
 import {Game} from 'src/app/models/game';
 import {Router} from "@angular/router";
 import {GameService} from "../../services/game.service";
 import {HistoryItem} from "../../models/history-item";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -21,9 +22,12 @@ export class GameComponent implements OnInit {
 
     private worker: Worker = new Worker('../../workers/bot.worker', {type: 'module'});
 
+    @ViewChild('end') endModal;
+
     constructor(
         private router: Router,
-        private gameService: GameService
+        private gameService: GameService,
+        private modalService: NgbModal
     ) { }
 
     ngOnInit(): void {
@@ -35,6 +39,7 @@ export class GameComponent implements OnInit {
             const wordBefore = this.word;
             this.word = this.game.append(symbol);
             this.history.push(new HistoryItem(wordBefore, this.word, symbol, "Bot"));
+            this.checkGameStatus();
         };
     }
 
@@ -44,34 +49,40 @@ export class GameComponent implements OnInit {
             this.router.navigate(['']);
         } else {
             this.game = game;
+            this.game.reset();
             this.bot = new Bot(this.game.alphabet, this.game.maxRounds, this.game.maxWordLen);
+            this.word = "";
+            this.history = [];
         }
     }
 
-    public resetGame() {
-        this.game = undefined;
-        this.bot = undefined;
-        this.word = "";
-    }
 
     public userMadeMove(symbol: string) {
         const wordBefore = this.word;
         this.word = this.game.append(symbol);
         this.history.push(new HistoryItem(wordBefore, this.word, symbol, "Player"));
+        this.checkGameStatus()
         if (!this.game.isFinished()) {
             this.canMove = false;
             this.worker.postMessage({bot: this.bot, symbol: symbol});
         }
-        // setTimeout(() => $event.path[0].value = this.word, 20);
+    }
 
+    public resetGame() {
+        this.setGame();
+    }
+
+    public newGame() {
+        this.router.navigate(['/new-game'])
+    }
+
+    private checkGameStatus() {
         if (this.game.isFinished()) {
-            if (this.game.isPlayer1Winner()) {
-                alert('Player 1 won');
-            } else {
-                alert('Player 2 won');
-            }
+            this.modalService.open(this.endModal, { centered: true }).result.then(
+                result => { result == 'restart' ? this.resetGame() : this.newGame() },
+                _ => this.newGame()
+            );
         }
-
     }
 
 }

@@ -13,8 +13,7 @@ export class NewGameComponent {
     public alphabetRaw: string = "abcdefghijklmnprqstuvwxyz";
     public alphabet: string = this.alphabetRaw;
     public maxWordLen: number = 10;
-    public maxRounds: number = 10;
-    public readonly maxSymbolsPerRow: number = 8;
+    public maxRounds: number = 20;
 
     constructor(
         private gameService: GameService,
