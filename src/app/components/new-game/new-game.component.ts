@@ -15,11 +15,15 @@ export class NewGameComponent {
     public maxWordLen: number = 10;
     public maxRounds: number = 10;
 
-    constructor(private gameService: GameService) { }
+    constructor(
+        private gameService: GameService,
+        private router: Router
+    ) { }
 
     onSubmit() {
         const game = new Game(this.alphabet, this.maxWordLen, this.maxRounds);
         this.gameService.updateGame(game);
+        this.router.navigate(['/game']);
     }
 
     updateAlphabet() {
