@@ -1,0 +1,34 @@
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">New Game</h2>
+            <form #gameForm="ngForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label>Alphabet:</label>
+                    <input type="text" class="form-control" id="alphabetRaw"
+                           [(ngModel)]="alphabetRaw" name="alphabetRaw" (keyup)="updateAlphabet()">
+                    <div class="m-2 row justify-content-center">
+                        <button *ngFor="let symbol of alphabet.split('')" disabled
+                                class="col-1 btn btn-outline-primary m-1">{{symbol}}</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="maxWordLen">Max word length:</label>
+                        <input type="text" class="form-control" id="maxWordLen" [(ngModel)]="maxWordLen"
+                               name="maxWordLen"
+                               min="1" type="number">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="maxRounds">Number of rounds:</label>
+                        <input type="text" class="form-control" id="maxRounds" [(ngModel)]="maxRounds" min="1"
+                               name="maxRounds" type="number">
+                    </div>
+                </div>
+                <button class="btn btn-block btn-primary" type="submit">Start</button>
+            </form>
+        </div>
+    </div>
+</div>

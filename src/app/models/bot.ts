@@ -4,8 +4,12 @@ export class Bot {
     private game: Game;
     private node: Node
 
-    constructor(alphabet: string, maxRounds: number, maxWordLen: number) {
-        this.game = new Game(alphabet, maxWordLen, maxRounds);
+    constructor(alphabet: string, maxRounds: number, maxWordLen: number, round: number = 0, word: string = "") {
+        this.game = new Game(alphabet, maxWordLen, maxRounds, round, word);
+    }
+
+    public init(node: Node) {
+        this.node = node;
     }
 
     public makeMove(char: string): string {
@@ -17,7 +21,7 @@ export class Bot {
 
             //selection # keep going down the tree based on best UCB values until terminal or unexpanded node
             while (node.childNodes.length === node.possibleMoves.length) {
-                node = node.selection();
+                node = this.selection(node);
                 game.append(node.move)
             }
             //expand
@@ -36,11 +40,11 @@ export class Bot {
             //backpropagate
             const iWon = game.isPlayer2Winner();
             while (node !== null) {
-                node.update(iWon);
+                this.update(node, iWon);
                 node = node.parent;
             }
         }
-        let bestNode = this.node.selection();
+        let bestNode = this.selection(this.node);
         this.node = bestNode;
         bestNode.parent = null;
         this.game.append(bestNode.move)
@@ -66,6 +70,30 @@ export class Bot {
             return new Node(lastMove, null, this.game.alphabet, false)
         }
     }
+    
+    
+    private ucb(node: Node) {
+        if (node.myMove) {
+            return node.won / node.visits + Math.sqrt(2 * Math.log(node.parent.visits) / node.visits);
+        }
+        else {
+            return node.lost / node.visits + Math.sqrt(2 * Math.log(node.parent.visits) / node.visits);
+        }
+    }
+
+    private selection(node: Node) {
+        return node.childNodes.reduce((prev, current) => (this.ucb(prev) > this.ucb(current)) ? prev : current);
+    }
+
+    private update(node: Node, iWon: boolean) {
+        if (iWon) {
+            node.won++;
+        }
+        else {
+            node.lost++;
+        }
+        node.visits += 1;
+    }
 }
 
 class Node {
@@ -87,28 +115,5 @@ class Node {
         this.visits = 0;
         this.move = move;
         this.myMove = myMove;
-    }
-
-    ucb() {
-        if (this.myMove) {
-            return this.won / this.visits + Math.sqrt(2 * Math.log(this.parent.visits) / this.visits);
-        }
-        else {
-            return this.lost / this.visits + Math.sqrt(2 * Math.log(this.parent.visits) / this.visits);
-        }
-    }
-
-    selection() {
-        return this.childNodes.reduce((prev, current) => (prev.ucb() > current.ucb()) ? prev : current);
-    }
-
-    update(iWon: boolean) {
-        if (iWon) {
-            this.won++;
-        }
-        else {
-            this.lost++;
-        }
-        this.visits += 1;
     }
 }
